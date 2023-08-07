@@ -1,0 +1,13 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    {% autoescape off %}
+    <div class="contentAll">
+        {{ contenido }}
+    </div>
+    {% endautoescape %}
+{% endblock %}
