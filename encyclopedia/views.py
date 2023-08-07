@@ -17,3 +17,15 @@ def entry(request, title):
         return render(request, 'encyclopedia/page.html', {
             'contenido' : markdown2.markdown(contenidoEntrada)
         })
+    
+def search(request, cadena):
+    entradas = util.list_entries()
+    posibilidades = []
+    for entrada in entradas:
+        if cadena in entrada:
+            posibilidades.append(entrada)
+    return render(request, 'encyclopedia/pageResults.html', {
+        'posibilidades' : posibilidades 
+    })
+
+
