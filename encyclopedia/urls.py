@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path('', views.search, name='search'),
+    path('search', views.search, name='search'),
     path('<str:title>', views.entry, name='entry')
 ]
