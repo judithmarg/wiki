@@ -7,7 +7,7 @@ import markdown2
 
 class NewPageCreate(forms.Form):
     titulo = forms.CharField(label='Titulo de la pagina')
-    contenido = forms.CharField(label='Contenido de la pagina')
+    contenido = forms.CharField(widget=forms.Textarea)
 
 class NewSearchForm(forms.Form):
     busqueda = forms.CharField(label='Search Encyclopedia')
