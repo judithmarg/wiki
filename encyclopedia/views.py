@@ -59,3 +59,22 @@ def new_page(request):
         'formCreate' : NewPageCreate()
     } )
     
+def save(request):
+    if request.method == 'POST':
+        form = NewPageCreate(request.POST)
+        if form.is_valid():
+            titulo = form.cleaned_data['titulo']
+            contenido = form.cleaned_data['contenido']
+            for entrada in entradas:
+                if titulo in entrada:
+                    return render(request, 'encyclopedia/pageNotFound.html')
+            util.save_entry(titulo, contenido)
+        else:
+            return render(request, 'encyclopedia/pageCreate.html',{
+                'formCreate' : NewPageCreate()
+            } )
+    else:
+        return render(request, 'encyclopedia/pageCreate.html',{
+            'formCreate' : NewPageCreate()
+        } )
+    
