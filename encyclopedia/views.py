@@ -5,6 +5,10 @@ from django import forms
 from . import util
 import markdown2 
 
+class NewPageCreate(forms.Form):
+    titulo = forms.CharField(label='Titulo de la pagina')
+    contenido = forms.CharField(label='Contenido de la pagina')
+
 class NewSearchForm(forms.Form):
     busqueda = forms.CharField(label='Search Encyclopedia')
 
@@ -37,17 +41,21 @@ def search(request):
             for entrada in entradas:
                 if pertenece(cadena, entrada):
                     posibilidades.append(entrada)
-                    print('entro una posibilidad')
             return render(request, 'encyclopedia/pageResults.html', {
                 'posibilidades' : posibilidades,
                 'form': NewSearchForm()
             })
         else:
-            return render(request, 'encyclopedia/layout.html', {
-                'form' : NewSearchForm()
+            return render(request, 'encyclopedia/pageResults.html', {
+                'posibilidades' : posibilidades,
+                'form': NewSearchForm()
             })
     return render(request, 'encyclopedia/layout.html', {
         'form': NewSearchForm()
     })
 
-
+def new_page(request):
+    return render(request, 'encyclopedia/pageCreate.html',{
+        'formCreate' : NewPageCreate()
+    } )
+    
