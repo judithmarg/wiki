@@ -5,6 +5,7 @@ from django import forms
 
 from . import util
 import markdown2 
+import random
 
 class NewPageCreate(forms.Form):
     titulo = forms.CharField(label='Titulo de la pagina')
@@ -107,4 +108,8 @@ def save_edit(request):
     else:
         return entry(request, last_entry)
 
-
+def random_page(request):
+    longitud = len(entradas)
+    indice = random.randint(0, longitud)
+    print(entradas[indice])
+    return entry(request, entradas[indice])
