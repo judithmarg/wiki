@@ -6,9 +6,9 @@
 
 {% block body %}
     <h1>Crear pagina</h1>
-    <form action="{% url 'new_page_save' %}" method="POST">
+    <form action="{% url 'page_save' %}" method="POST">
         {% csrf_token %}
-        {{ formCreate }}
+        {{ formEdit }}
         <input type="submit" value="Save">
     </form>
 {% endblock %}

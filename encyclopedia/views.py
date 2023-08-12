@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import render
 from django import forms
 
@@ -9,10 +10,14 @@ class NewPageCreate(forms.Form):
     titulo = forms.CharField(label='Titulo de la pagina')
     contenido = forms.CharField(widget=forms.Textarea)
 
+class NewPageEdit(forms.Form):
+    contenido = forms.CharField(widget=forms.Textarea)
+
 class NewSearchForm(forms.Form):
     busqueda = forms.CharField(label='Search Encyclopedia')
 
 entradas = set(util.list_entries())
+last_entry = None
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -22,9 +27,11 @@ def index(request):
 
 def entry(request, title):
     contenidoEntrada = util.get_entry(title)
+    global last_entry
     if contenidoEntrada is None:
         return render(request, 'encyclopedia/pageNotFound.html')
     else:
+        last_entry = title 
         return render(request, 'encyclopedia/page.html', {
             'contenido' : markdown2.markdown(contenidoEntrada)
         })
@@ -67,8 +74,10 @@ def save(request):
             contenido = form.cleaned_data['contenido']
             for entrada in entradas:
                 if titulo in entrada:
-                    return render(request, 'encyclopedia/pageNotFound.html')
+                    return render(request, 'encyclopedia/pageError.html')
             util.save_entry(titulo, contenido)
+            return HttpResponseRedirect(reverse('index'))
+        
         else:
             return render(request, 'encyclopedia/pageCreate.html',{
                 'formCreate' : NewPageCreate()
@@ -78,3 +87,24 @@ def save(request):
             'formCreate' : NewPageCreate()
         } )
     
+def edit(request):
+    formEdit = NewPageEdit()
+    ultima_entrada = util.get_entry(last_entry)
+    formEdit = NewPageEdit(initial={'contenido':ultima_entrada})
+    return render(request, 'encyclopedia/pageEdit.html',{
+        'formEdit' : formEdit
+    } )
+
+def save_edit(request):
+    if request.method == 'POST':
+        form = NewPageEdit(request.POST)
+        if form.is_valid():
+            contenido = form.cleaned_data['contenido']
+            util.save_entry(last_entry,contenido)
+            return entry(request, last_entry)
+        else:
+            return render(request, 'encyclopedia/pageError.html')
+    else:
+        return entry(request, last_entry)
+
+
