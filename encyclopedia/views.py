@@ -109,7 +109,8 @@ def save_edit(request):
         return entry(request, last_entry)
 
 def random_page(request):
+    global entradas
     longitud = len(entradas)
     indice = random.randint(0, longitud)
-    print((list)entradas[indice])
-    return entry(request, (list)entradas[indice])
+    titulo_page = list(entradas)[indice]
+    return entry(request, titulo_page)
