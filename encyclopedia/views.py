@@ -111,5 +111,5 @@ def save_edit(request):
 def random_page(request):
     longitud = len(entradas)
     indice = random.randint(0, longitud)
-    print(entradas[indice])
-    return entry(request, entradas[indice])
+    print((list)entradas[indice])
+    return entry(request, (list)entradas[indice])
