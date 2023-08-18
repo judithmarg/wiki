@@ -52,6 +52,7 @@ def search(request):
             for entrada in entradas:
                 if pertenece(cadena, entrada):
                     posibilidades.append(entrada)
+                    return entry(request, entrada)
             return render(request, 'encyclopedia/pageResults.html', {
                 'posibilidades' : posibilidades,
                 'form': NewSearchForm()
