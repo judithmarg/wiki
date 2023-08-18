@@ -10,5 +10,6 @@ urlpatterns = [
     path('page_edit', views.edit, name='page_edit'),
     path('page_save', views.save_edit, name='page_save'),
     path('random_page', views.random_page, name='random_page'),
+    path('wiki/<str:title>', views.entry, name='entry'), 
     path('<str:title>', views.entry, name='entry')   #el orden es importante, se imponen las funciones por delante de otras
 ]
