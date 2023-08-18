@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: white;
+    background-color: rgb(245, 241, 241);
 }
 
 code {
@@ -28,7 +28,7 @@ textarea {
 }
 
 .sidebar {
-    background-color: #f0f0f0;
+    background-color: #cabde3;
     height: 100vh;
     padding: 20px;
 }

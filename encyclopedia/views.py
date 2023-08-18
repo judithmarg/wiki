@@ -30,11 +30,14 @@ def entry(request, title):
     contenidoEntrada = util.get_entry(title)
     global last_entry
     if contenidoEntrada is None:
-        return render(request, 'encyclopedia/pageNotFound.html')
+        return render(request, 'encyclopedia/pageNotFound.html',{    
+            'form': NewSearchForm()
+        })
     else:
         last_entry = title 
         return render(request, 'encyclopedia/page.html', {
-            'contenido' : markdown2.markdown(contenidoEntrada)
+            'contenido' : markdown2.markdown(contenidoEntrada),
+            'form': NewSearchForm()
         })
     
 def pertenece(cadena, cadenaPerteneciente):
@@ -64,7 +67,8 @@ def search(request):
 
 def new_page(request):
     return render(request, 'encyclopedia/pageCreate.html',{
-        'formCreate' : NewPageCreate()
+        'formCreate' : NewPageCreate(),
+        'form': NewSearchForm()
     } )
     
 def save(request):
@@ -81,11 +85,13 @@ def save(request):
         
         else:
             return render(request, 'encyclopedia/pageCreate.html',{
-                'formCreate' : NewPageCreate()
+                'formCreate' : NewPageCreate(),
+                'form': NewSearchForm()
             } )
     else:
         return render(request, 'encyclopedia/pageCreate.html',{
-            'formCreate' : NewPageCreate()
+            'formCreate' : NewPageCreate(),
+            'form': NewSearchForm()
         } )
     
 def edit(request):
@@ -93,7 +99,8 @@ def edit(request):
     ultima_entrada = util.get_entry(last_entry)
     formEdit = NewPageEdit(initial={'contenido':ultima_entrada})
     return render(request, 'encyclopedia/pageEdit.html',{
-        'formEdit' : formEdit
+        'formEdit' : formEdit,
+        'form': NewSearchForm()
     } )
 
 def save_edit(request):
@@ -104,7 +111,9 @@ def save_edit(request):
             util.save_entry(last_entry,contenido)
             return entry(request, last_entry)
         else:
-            return render(request, 'encyclopedia/pageError.html')
+            return render(request, 'encyclopedia/pageError.html', {
+                'form': NewSearchForm()
+            })
     else:
         return entry(request, last_entry)
 
